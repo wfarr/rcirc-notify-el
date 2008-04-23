@@ -75,7 +75,8 @@ that can occur between two notifications.  The default is
   "Notify the current user when someone sends a message that
 matches a regexp in `rcirc-keywords'."
   (interactive)
-  (when (and (string-match (rcirc-nick proc) text)
+  (when (and (string-match (regexp-quote (rcirc-nick proc))
+                           text)
              (not (string= (rcirc-nick proc) sender))
              (not (string= (rcirc-server-name proc) sender))
              (my-rcirc-notify-allowed sender))
