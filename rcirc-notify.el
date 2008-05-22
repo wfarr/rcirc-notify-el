@@ -1,4 +1,5 @@
-;;;; rcirc-notify.el -- libnotify popups
+;;;; rcirc-notify.el
+;; -*- mode: elisp -*-
 ;; Copyright (c) 2008 Will Farrington
 ;;
 ;; This program is free software; you can redistribute it and/or
