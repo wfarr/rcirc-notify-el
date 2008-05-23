@@ -1,6 +1,7 @@
 ;;;; rcirc-notify.el
 ;; -*- mode: elisp -*-
-;; Copyright (c) 2008 Will Farrington
+;; Copyright (c) 2008 Will Farrington <wcfarrington@gmail.com>
+;; Copyright (c) 2008 Nathan Weizenbaum <nex342@gmail.com>
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -17,10 +18,6 @@
 ;; Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 ;; MA 02111-1307 USA
 ;;
-;;;; Commentary:
-;;
-;; This code is inspired in part by erc-page-me.el and offers
-;; the same functionality as it, but for rcirc.
 
 (defvar rcirc-notification-message "%s is calling your name in %s."
   "Format of message to display in libnotify popup.
