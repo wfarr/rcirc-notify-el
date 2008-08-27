@@ -53,7 +53,7 @@ private messages.")
     (let ((default-directory "~/"))
       (rcirc-send-notification "rcirc" (format rcirc-notification-message sender target))))
   ;; Always print a copy to *Messages*
-  (message (string (format-time-string "%r") " - " (format rcirc-notification-message sender target))))
+  (message (concat (format-time-string "%r") " - " (format rcirc-notification-message sender target))))
 
 (defun rcirc-notify-allowed (sender &optional delay)
   (unless delay (setq delay rcirc-notification-timeout))
