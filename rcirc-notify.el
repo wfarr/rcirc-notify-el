@@ -32,6 +32,11 @@ notification.")
   "Number of seconds that will elapse between notifications from the
 same person.")
 
+(defvar rcirc-notify-sticky nil
+  "If t makes notifications 'stick' and not go away until clicked.
+Currently only works on OS X with Growl due to notify-send not
+having support for that sort of thing that I could find.")
+
 (defvar rcirc-privmsg-target "private message"
   "String used as target in `rcirc-notification-message' to denote
 private messages.")
@@ -39,7 +44,7 @@ private messages.")
 (defun rcirc-send-notification (title message)
   (cond ((eq window-system 'mac)
          (start-process "rcirc-notify" nil "growlnotify"
-                        "-t" title "-m" message))
+                        "-t" title "-m" message "-a" "Emacs.app" (if rcirc-notify-sticky "-s" "")))
         ((eq window-system 'x)
          (start-process "rcirc-notify" nil
                         ;; 8640000 ms = 1 day
