@@ -42,10 +42,13 @@ having support for that sort of thing that I could find.")
 private messages.")
 
 (defun rcirc-send-notification (title message)
-  (cond ((eq window-system 'mac)
+  (cond ((and (or (eq window-system 'mac)
+                  (eq window-system 'ns))
+              (executable-find "growlnotify"))
          (start-process "rcirc-notify" nil "growlnotify"
                         "-t" title "-m" message "-a" "Emacs.app" (if rcirc-notify-sticky "-s" "")))
-        ((eq window-system 'x)
+        ((and (eq window-system 'x)
+              (executable-find "notify-send"))
          (start-process "rcirc-notify" nil
                         ;; 8640000 ms = 1 day
                         "notify-send" "-u" "normal" "-i" "gtk-dialog-info"
