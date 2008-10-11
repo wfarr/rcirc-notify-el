@@ -33,9 +33,7 @@ notification.")
 same person.")
 
 (defvar rcirc-notify-sticky nil
-  "If t makes notifications 'stick' and not go away until clicked.
-Currently only works on OS X with Growl due to notify-send not
-having support for that sort of thing that I could find.")
+  "If t makes notifications 'stick' and not go away until clicked.")
 
 (defvar rcirc-privmsg-target "private message"
   "String used as target in `rcirc-notification-message' to denote
@@ -52,7 +50,7 @@ private messages.")
          (start-process "rcirc-notify" nil
                         ;; 8640000 ms = 1 day
                         "notify-send" "-u" "normal" "-i" "gtk-dialog-info"
-                        "-t" "8640000" title message))))
+                        "-t" (if rcirc-notify-sticky "0" "8640000") title message))))
 
 (defun rcirc-notify (sender &optional target)
   (unless target (setq target rcirc-privmsg-target))
