@@ -19,14 +19,9 @@
 ;; MA 02111-1307 USA
 ;;
 
-(defvar rcirc-notification-message "%s is calling your name in %s."
-  "Format of message to display in libnotify popup.
-The first instance of '%s' will expand to the nick that notified you,
-while the latter will expand to the channel name or `rcirc-privmsg-target'.")
+(defvar rcirc-notification-title "rcirc: %s [%s]")
 
-(defvar rcirc-notified-nick-alist nil
-  "An alist of nicks and the last time they tried to trigger a
-notification.")
+(defvar rcirc-notified-nick-alist nil)
 
 (defvar rcirc-notification-timeout 30
   "Number of seconds that will elapse between notifications from the
@@ -34,10 +29,6 @@ same person.")
 
 (defvar rcirc-notify-sticky nil
   "If t makes notifications 'stick' and not go away until clicked.")
-
-(defvar rcirc-privmsg-target "private message"
-  "String used as target in `rcirc-notification-message' to denote
-private messages.")
 
 (defun rcirc-send-notification (title message)
   (cond ((and (or (eq window-system 'mac)
@@ -52,14 +43,15 @@ private messages.")
                         "notify-send" "-u" "normal" "-i" "gtk-dialog-info"
                         "-t" (if rcirc-notify-sticky "0" "8640000") title message))))
 
-(defun rcirc-notify (sender &optional target)
-  (unless target (setq target rcirc-privmsg-target))
-  (when window-system
-    ;; Set default dir to appease the notification gods
-    (let ((default-directory "~/"))
-      (rcirc-send-notification "rcirc" (format rcirc-notification-message sender target))))
-  ;; Always print a copy to *Messages*
-  (message (concat (format-time-string "%r") " - " (format rcirc-notification-message sender target))))
+(defun rcirc-notify (sender text &optional target)
+  (unless target
+    (let ((target "private message"))
+      (when window-system
+        ;; Set default dir to appease the notification gods
+        (let ((default-directory "~/"))
+          (rcirc-send-notification (concat (format rcirc-notification-title sender target)) text)))
+      ;; Always print a copy to *Messages*
+      (message (concat (format-time-string "%r") " - " (format rcirc-notification-title sender target) ": " text)))))
 
 (defun rcirc-notify-allowed (sender &optional delay)
   (unless delay (setq delay rcirc-notification-timeout))
@@ -84,7 +76,7 @@ private messages.")
              (not (string= (rcirc-nick proc) sender))
              (not (string= (rcirc-server-name proc) sender))
              (rcirc-notify-allowed sender))
-    (rcirc-notify sender target)))
+    (rcirc-notify sender text target)))
 
 (defun rcirc-notify-privmsg (proc sender response target text)
   (interactive)
@@ -92,7 +84,7 @@ private messages.")
              (not (string= sender (rcirc-nick proc)))
              (not (rcirc-channel-p target))
              (rcirc-notify-allowed sender))
-    (rcirc-notify sender)))
+    (rcirc-notify sender text)))
 
 ;;;###autoload
 (defun turn-on-rcirc-notify ()
