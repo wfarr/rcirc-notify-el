@@ -44,14 +44,12 @@ same person.")
                         "-t" (if rcirc-notify-sticky "0" "8640000") title message))))
 
 (defun rcirc-notify (sender text &optional target)
-  (unless target
-    (let ((target "private message"))
-      (when window-system
-        ;; Set default dir to appease the notification gods
-        (let ((default-directory "~/"))
-          (rcirc-send-notification (concat (format rcirc-notification-title sender target)) text)))
-      ;; Always print a copy to *Messages*
-      (message (concat (format-time-string "%r") " - " (format rcirc-notification-title sender target) ": " text)))))
+  (if (not target) (setq target "private message"))
+  (if window-system
+      (let ((default-directory "~/"))
+        (rcirc-send-notification (concat (format rcirc-notification-title sender target)) text)))
+  (message (concat (format-time-string "%r") " - " (format rcirc-notification-title sender target) ": " text))
+  (makunbound 'target))
 
 (defun rcirc-notify-allowed (sender &optional delay)
   (unless delay (setq delay rcirc-notification-timeout))
@@ -68,11 +66,7 @@ same person.")
 
 (defun rcirc-notify-channel (proc sender response target text)
   (interactive)
-  (when (and (string-match
-              (concat "\\(^\\|[^a-zA-Z0-9_\\-]\\)"
-                      (regexp-quote (rcirc-nick proc))
-                      "\\($\\|[^a-zA-Z0-9_\\-]\\)")
-              text)
+  (when (and (string-match (regexp-quote (rcirc-nick proc)) text)
              (not (string= (rcirc-nick proc) sender))
              (not (string= (rcirc-server-name proc) sender))
              (rcirc-notify-allowed sender))
