@@ -44,7 +44,7 @@ same person.")
                         "-t" (if rcirc-notify-sticky "0" "8640000") title message))))
 
 (defun rcirc-notify (sender text &optional target)
-  (if (not target) (setq target "private message"))
+  (setq target (or target "private message"))
   (if window-system
       (let ((default-directory "~/"))
         (rcirc-send-notification (concat (format rcirc-notification-title sender target)) text)))
