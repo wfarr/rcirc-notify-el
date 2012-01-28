@@ -1,5 +1,5 @@
-;;;; rcirc-notify.el
-;; -*- mode: elisp -*-
+;;; rcirc-notify.el --- ???
+
 ;; Copyright (c) 2008 Will Farrington <wcfarrington@gmail.com>
 ;; Copyright (c) 2008 Nathan Weizenbaum <nex342@gmail.com>
 ;;
