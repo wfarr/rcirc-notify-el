@@ -1,4 +1,4 @@
-;;; rcirc-notify.el --- ???
+;;; rcirc-notify.el --- get notified about private messages
 
 ;; Copyright (c) 2008 Will Farrington <wcfarrington@gmail.com>
 ;; Copyright (c) 2008 Nathan Weizenbaum <nex342@gmail.com>
